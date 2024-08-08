@@ -3,94 +3,31 @@
         {
             "name": "Retiro",
             "latitude": -34.589813,
-            "longitude": -58.374562,
-            "schedules": [
-                {"trainNumber": 3009, "time": "05:23"},
-                {"trainNumber": 3011, "time": "05:48"},
-                {"trainNumber": 3013, "time": "06:07"},
-                {"trainNumber": 3015, "time": "06:25"},
-                {"trainNumber": 3017, "time": "06:41"},
-                {"trainNumber": 3019, "time": "06:57"},
-                {"trainNumber": 3021, "time": "07:13"},
-                {"trainNumber": 3023, "time": "07:30"},
-                {"trainNumber": 3025, "time": "07:55"},
-                {"trainNumber": 3027, "time": "08:20"},
-                {"trainNumber": 3029, "time": "08:45"},
-                {"trainNumber": 3031, "time": "09:10"},
-                {"trainNumber": 3033, "time": "09:35"},
-                {"trainNumber": 3035, "time": "10:00"},
-                {"trainNumber": 3037, "time": "10:25"},
-                {"trainNumber": 3039, "time": "10:50"},
-                {"trainNumber": 3041, "time": "11:15"},
-                {"trainNumber": 3043, "time": "11:40"},
-                {"trainNumber": 3045, "time": "12:05"},
-                {"trainNumber": 3047, "time": "12:30"},
-                {"trainNumber": 3049, "time": "12:55"},
-                {"trainNumber": 3051, "time": "13:20"},
-                {"trainNumber": 3053, "time": "13:45"},
-                {"trainNumber": 3055, "time": "14:10"},
-                {"trainNumber": 3057, "time": "14:35"},
-                {"trainNumber": 3059, "time": "15:00"},
-                {"trainNumber": 3061, "time": "15:25"},
-                {"trainNumber": 3063, "time": "15:50"},
-                {"trainNumber": 3065, "time": "16:06"},
-                {"trainNumber": 3067, "time": "16:22"},
-                {"trainNumber": 3069, "time": "16:38"},
-                {"trainNumber": 3071, "time": "16:54"},
-                {"trainNumber": 3073, "time": "17:10"},
-                {"trainNumber": 3075, "time": "17:26"},
-                {"trainNumber": 3077, "time": "17:42"},
-                {"trainNumber": 3079, "time": "17:58"},
-                {"trainNumber": 3081, "time": "18:14"},
-                {"trainNumber": 3083, "time": "18:30"},
-                {"trainNumber": 3085, "time": "18:46"},
-                {"trainNumber": 3087, "time": "19:02"},
-                {"trainNumber": 3089, "time": "19:18"},
-                {"trainNumber": 3091, "time": "19:34"},
-                {"trainNumber": 3093, "time": "19:50"},
-                {"trainNumber": 3095, "time": "20:10"},
-                {"trainNumber": 3097, "time": "20:30"},
-                {"trainNumber": 3099, "time": "20:55"},
-                {"trainNumber": 3101, "time": "21:20"},
-                {"trainNumber": 3103, "time": "21:45"},
-                {"trainNumber": 3105, "time": "22:05"},
-                {"trainNumber": 3107, "time": "22:35"},
-                {"trainNumber": 3109, "time": "23:00"},
-                {"trainNumber": 3111, "time": "23:25"},
-                {"trainNumber": 3113, "time": "23:50"}
-            ]
+            "longitude": -58.374562
         },
         {
             "name": "Saldias",
-            "latitude": -34.573062,
-            "longitude": -58.401938,
-            "schedules": [
-                {"trainNumber": 3009, "time": "05:30"},
-                {"trainNumber": 3011, "time": "05:55"},
-                {"trainNumber": 3013, "time": "06:14"},
-                {"trainNumber": 3015, "time": "06:32"}
-            ]
+            "latitude": -34.589813,
+            "longitude": -58.374562
         },
         {
-            "name": "Ing, A. Sourdeaux",
-            "latitude": -34.502938,
-            "longitude": -58.666812,
-            "schedules": [
-                {"trainNumber": 3001, "time": "04:05"},
-                {"trainNumber": 3003, "time": "04:35"},
-                {"trainNumber": 3005, "time": "05:08"},
-                {"trainNumber": 3007, "time": "05:35"}
-            ]
-        },
-        {
-            "name": "Villa Rosa",
-            "latitude": -34.416812,
-            "longitude": -58.871188,
-            "schedules": [
-                {"trainNumber": 3001, "time": "07:42"},
-                {"trainNumber": 3003, "time": "08:42"},
-                {"trainNumber": 3005, "time": "09:12"}
-            ]
+            "name": "Ciudad Universitaria",
+            "latitude": -34.589813,
+            "longitude": -58.374562
         }
+        // y más estaciones...
+    ],
+    "schedules": [
+        {
+            "train_number": 3001,
+            "times": ["#", "#", "00:07", "00:11"],
+            "destination": "Villa Rosa"
+        },
+        {
+            "train_number": 3002,
+            "times": ["#", "#", "00:07", "00:11"],
+            "destination": "Grand Bourg"
+        }
+        // y más horarios...
     ]
 }

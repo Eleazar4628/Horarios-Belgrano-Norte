@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Horarios Belgrano Norte</title>
+    <title>Horarios de Tren</title>
     <style>
         body {
             background-color: #000;
@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <h1>Horarios del Tren</h1>
+    <h1>Horarios de Tren</h1>
     <div id="user-location"></div>
     <div id="nearest-station-info"></div>
 
@@ -38,38 +38,44 @@
         function findNearestStation(stations, userLat, userLon) {
             let nearestStation = null;
             let minDistance = Infinity;
+            let nearestStationIndex = -1;
 
-            stations.forEach(station => {
+            stations.forEach((station, index) => {
                 const distance = simpleDistance(userLat, userLon, station.latitude, station.longitude);
                 if (distance < minDistance) {
                     minDistance = distance;
                     nearestStation = station;
+                    nearestStationIndex = index;
                 }
             });
 
-            return nearestStation;
+            return { ...nearestStation, index: nearestStationIndex };
         }
 
         // Función para mostrar la información de la estación más cercana y los 3 próximos trenes
-        function displayNearestStationInfo(userLat, userLon, station) {
+        function displayNearestStationInfo(userLat, userLon, nearestStation, schedules) {
             const userLocationDiv = document.getElementById("user-location");
             const nearestStationInfoDiv = document.getElementById("nearest-station-info");
 
             userLocationDiv.innerHTML = `<p>Tu ubicación: (${userLat}, ${userLon})</p>`;
 
-            if (station) {
+            if (nearestStation) {
                 // Obtener la hora actual en formato HH:MM
                 const now = new Date();
                 const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
 
                 // Filtrar y ordenar los horarios para mostrar los 3 próximos
-                const upcomingTrains = station.schedules
-                    .filter(schedule => schedule.time >= currentTime)
+                const upcomingTrains = schedules
+                    .map(schedule => {
+                        const time = schedule.times[nearestStation.index];
+                        return time !== "#" ? { trainNumber: schedule.train_number, time } : null;
+                    })
+                    .filter(train => train && train.time >= currentTime)
                     .sort((a, b) => a.time.localeCompare(b.time))
                     .slice(0, 3);
 
-                nearestStationInfoDiv.innerHTML = `<h2>Estación más cercana: ${station.name}</h2>
-                                                   <p>Ubicación de la estación: (${station.latitude}, ${station.longitude})</p>
+                nearestStationInfoDiv.innerHTML = `<h2>Estación más cercana: ${nearestStation.name}</h2>
+                                                   <p>Ubicación de la estación: (${nearestStation.latitude}, ${nearestStation.longitude})</p>
                                                    <p>Próximos trenes:</p>
                                                    <ul>
                                                        ${upcomingTrains.length > 0 ? 
@@ -92,7 +98,7 @@
                     loadJSON("train_stations.json", function(data) {
                         const nearestStation = findNearestStation(data.stations, userLat, userLon);
                         console.log('Estación más cercana:', nearestStation);
-                        displayNearestStationInfo(userLat, userLon, nearestStation);
+                        displayNearestStationInfo(userLat, userLon, nearestStation, data.schedules);
                     });
                 }, error => {
                     console.error("Error obteniendo la ubicación del usuario: ", error);
