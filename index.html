@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Horarios de Tren</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Horarios de Tren</h1>
+    <div id="user-location"></div>
+    <div id="nearest-station-info"></div>
+
+    <script>
+        // Función para cargar el archivo JSON
+        function loadJSON(file, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.overrideMimeType("application/json");
+            xhr.open("GET", file, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    callback(JSON.parse(xhr.responseText));
+                }
+            };
+            xhr.send(null);
+        }
+
+        // Función simplificada para calcular la "distancia" entre dos puntos (no es precisa pero es rápida)
+        function simpleDistance(lat1, lon1, lat2, lon2) {
+            return Math.abs(lat1 - lat2) + Math.abs(lon1 - lon2);
+        }
+
+        // Función para encontrar la estación más cercana
+        function findNearestStation(stations, userLat, userLon) {
+            let nearestStation = null;
+            let minDistance = Infinity;
+
+            stations.forEach(station => {
+                const distance = simpleDistance(userLat, userLon, station.latitude, station.longitude);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearestStation = station;
+                }
+            });
+
+            return nearestStation;
+        }
+
+        // Función para mostrar la información de la estación más cercana y los 3 próximos trenes
+        function displayNearestStationInfo(userLat, userLon, station) {
+            const userLocationDiv = document.getElementById("user-location");
+            const nearestStationInfoDiv = document.getElementById("nearest-station-info");
+
+            userLocationDiv.innerHTML = `<p>Tu ubicación: (${userLat}, ${userLon})</p>`;
+
+            if (station) {
+                // Obtener la hora actual en formato HH:MM
+                const now = new Date();
+                const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+                // Filtrar y ordenar los horarios para mostrar los 3 próximos
+                const upcomingTrains = station.schedules
+                    .filter(schedule => schedule.time >= currentTime)
+                    .sort((a, b) => a.time.localeCompare(b.time))
+                    .slice(0, 3);
+
+                nearestStationInfoDiv.innerHTML = `<h2>Estación más cercana: ${station.name}</h2>
+                                                   <p>Ubicación de la estación: (${station.latitude}, ${station.longitude})</p>
+                                                   <p>Próximos trenes:</p>
+                                                   <ul>
+                                                       ${upcomingTrains.length > 0 ? 
+                                                           upcomingTrains.map(train => `<li>Tren ${train.trainNumber}: ${train.time}</li>`).join('') :
+                                                           '<li>No hay trenes próximos</li>'}
+                                                   </ul>`;
+            } else {
+                nearestStationInfoDiv.innerHTML = "<p>No se pudo encontrar una estación cercana.</p>";
+            }
+        }
+
+        // Obtener la ubicación actual del usuario y encontrar la estación más cercana
+        function getUserLocationAndFindStation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    console.log(`Ubicación del usuario: lat=${userLat}, lon=${userLon}`);
+
+                    loadJSON("train_stations.json", function(data) {
+                        const nearestStation = findNearestStation(data.stations, userLat, userLon);
+                        console.log('Estación más cercana:', nearestStation);
+                        displayNearestStationInfo(userLat, userLon, nearestStation);
+                    });
+                }, error => {
+                    console.error("Error obteniendo la ubicación del usuario: ", error);
+                    document.getElementById("nearest-station-info").innerHTML = "<p>Error obteniendo la ubicación del usuario.</p>";
+                });
+            } else {
+                console.error("Geolocalización no soportada por este navegador.");
+                document.getElementById("nearest-station-info").innerHTML = "<p>Geolocalización no soportada por este navegador.</p>";
+            }
+        }
+
+        // Ejecutar la función para obtener la ubicación del usuario y encontrar la estación más cercana
+        getUserLocationAndFindStation();
+    </script>
+</body>
+</html>
