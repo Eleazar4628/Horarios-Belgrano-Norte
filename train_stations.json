@@ -15,7 +15,6 @@
             "latitude": -34.589813,
             "longitude": -58.374562
         }
-        // y más estaciones...
     ],
     "schedules": [
         {
@@ -28,6 +27,5 @@
             "times": ["#", "#", "00:07", "00:11"],
             "destination": "Grand Bourg"
         }
-        // y más horarios...
     ]
 }
